@@ -22,7 +22,7 @@ exports.createNIN = async (req, res) => {
         const validNIN = /^\d{11}$/.test(tNin);
 
         if (!validNIN) {
-            return res.status(400).json({error: "NIN must have only 11 digits"})
+            return res.status(400).json({error: "NIN must have ONLY 11 digits"})
         }
 
         //Ensure nin does not already exist in the database
