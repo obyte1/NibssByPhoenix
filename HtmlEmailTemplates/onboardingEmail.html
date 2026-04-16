@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Welcome to NibssByPhoenix</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f4f6f8; padding: 20px;">
+  <div style="max-width: 600px; margin: auto; background: #fff; padding: 20px; border-radius: 8px;">
+    
+    <h2 style="color: #2c3e50;">Welcome to NibssByPhoenix 🚀</h2>
+
+    <p>Hello <strong>{{name}}</strong>,</p>
+
+    <p>Your fintech has been successfully onboarded. Below are your credentials:</p>
+
+    <h3>🔐 API Credentials</h3>
+    <ul>
+      <li><strong>API Key:</strong> {{apiKey}}</li>
+      <li><strong>API Secret:</strong> {{apiSecret}}</li>
+      <li><strong>Bank Code:</strong> {{bankCode}}</li>
+      <li><strong>Bank Name:</strong> {{bankName}}</li>
+    </ul>
+
+    <h3>📘 Integration Guide</h3>
+    <p>Use the following endpoints to integrate:</p>
+
+    <ul>
+      <li><strong>Generate Token:</strong> POST /auth/token</li>
+      <li><strong>Create Account:</strong> POST /account/create</li>
+      <li><strong>Name Enquiry:</strong> GET /account/name-enquiry/:accountNumber</li>
+      <li><strong>Transfer:</strong> POST /transfer</li>
+      <li><strong>Transaction Status:</strong> GET /transaction/:ref</li>
+    </ul>
+
+    <p><strong>Base URL:</strong> {{baseUrl}}</p>
+
+    <p>⚠️ Keep your API Secret safe. Do not expose it publicly.</p>
+
+    <hr />
+
+    <p style="font-size: 12px; color: gray;">
+      NibssByPhoenix Team
+    </p>
+
+  </div>
+</body>
+</html>

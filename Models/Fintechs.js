@@ -35,7 +35,11 @@ const fintechSchema = new mongoose.Schema(
     bankName: {
       type: String,
       required: true,
+      unique: true,
+      trim: true,
     },
+
+   
   },
   {
     timestamps:  true,
