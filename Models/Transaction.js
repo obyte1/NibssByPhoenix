@@ -10,12 +10,12 @@ const transactionSchema = new mongoose.Schema(
     },
 
     senderAccount: {
-      type: string,
+      type: String,
       required: true,
     },
 
     receiverAccount: {
-      type: string,
+      type: String,
       required: true,
     },
 
@@ -36,11 +36,6 @@ const transactionSchema = new mongoose.Schema(
     versionKey: false,
   }
 );
-
-// Index for fast lookups
-transactionSchema.index({ reference: 1 });
-transactionSchema.index({ senderAccount: 1 });
-transactionSchema.index({ receiverAccount: 1 });
 
 
 module.exports = mongoose.model("Transaction", transactionSchema);

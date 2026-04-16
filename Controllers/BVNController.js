@@ -58,7 +58,7 @@ const insertBVN = async (req, res) => {
 
 const validateBVN = async (req, res) => {
   try {
-    const { bvn, firstName, lastName, dob, phone } = req.body;
+    const { bvn } = req.body;
 
     if (!validateBVNFormat(bvn)) {
       return res.status(400).json({
@@ -77,26 +77,6 @@ const validateBVN = async (req, res) => {
 
     let isValid = true;
     const mismatches = [];
-
-    if (firstName && bvnRecord.firstName.toLowerCase() !== firstName.toLowerCase()) {
-      isValid = false;
-      mismatches.push('firstName');
-    }
-
-    if (lastName && bvnRecord.lastName.toLowerCase() !== lastName.toLowerCase()) {
-      isValid = false;
-      mismatches.push('lastName');
-    }
-
-    if (dob && new Date(dob).getTime() !== bvnRecord.dob.getTime()) {
-      isValid = false;
-      mismatches.push('dob');
-    }
-
-    if (phone && bvnRecord.phone !== phone) {
-      isValid = false;
-      mismatches.push('phone');
-    }
 
     if (isValid) {
       return res.json({
@@ -126,48 +106,8 @@ const validateBVN = async (req, res) => {
   }
 };
 
-const getBVNByNumber = async (req, res) => {
-  try {
-    const { bvn } = req.params;
-
-    if (!validateBVNFormat(bvn)) {
-      return res.status(400).json({
-        success: false,
-        message: 'Invalid BVN format. BVN must be exactly 11 digits.'
-      });
-    }
-
-    const bvnRecord = await BVN.findOne({ bvn });
-    if (!bvnRecord) {
-      return res.status(404).json({
-        success: false,
-        message: 'BVN not found.'
-      });
-    }
-
-    res.json({
-      success: true,
-      data: {
-        bvn: bvnRecord.bvn,
-        firstName: bvnRecord.firstName,
-        lastName: bvnRecord.lastName,
-        dob: bvnRecord.dob,
-        phone: bvnRecord.phone,
-        createdAt: bvnRecord.createdAt,
-        updatedAt: bvnRecord.updatedAt
-      }
-    });
-  } catch (error) {
-    console.error('Error fetching BVN:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Internal server error while fetching BVN.'
-    });
-  }
-};
 
 module.exports = {
   insertBVN,
   validateBVN,
-  getBVNByNumber
 };

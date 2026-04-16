@@ -34,7 +34,7 @@ const bvnSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: true, // gives createdAt & updatedAt (optional for BVN records)
+    timestamps: true, 
     versionKey: false,
   }
 );
