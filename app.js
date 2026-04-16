@@ -2,18 +2,19 @@ require('dotenv').config();
 
 const express = require('express');
 const connectDB = require('./Configs/database');
-const fintechController = require('./Controller/fintechController');
-const authController = require('./Controller/authController');
-const accountController = require('./Controller/accountController');
-const transferController = require('./Controller/transferController')
+
 
 const app = express();
 
 app.use(express.json());
+app.use('/nin', ninRoutes);
 
 // DB
 connectDB();
 
+// Routes
+const bvnRoutes = require('./routes/BVN');
+app.use('/api/bvn', bvnRoutes);
 
 // routes/index.js
 router.post("/onboard", fintechController.onboardFintech);
