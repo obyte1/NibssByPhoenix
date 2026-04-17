@@ -150,7 +150,7 @@ exports.createAccount = async (req, res) => {
     accountNumber,
     bankCode: fintech.bankCode,
     fintechId: fintech._id,
-    balance: 0
+    balance: 15000
   });
 
   res.json(account);
