@@ -62,8 +62,8 @@ router.post("/fintech/onboard", fintechController.onboardFintech); //tested
  * @swagger
  * /api/account/create:
  *   post:
- *     summary: Create account
- *     tags: [Fintech]
+ *     summary: Create account using KYC
+ *     tags: [Account]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -72,12 +72,24 @@ router.post("/fintech/onboard", fintechController.onboardFintech); //tested
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - kycType
+ *               - kycID
+ *               - dob
  *             properties:
- *               accountName:
+ *               kycType:
  *                 type: string
+ *                 example: BVN
+ *               kycID:
+ *                 type: string
+ *                 example: "12345678901"
+ *               dob:
+ *                 type: string
+ *                 format: date
+ *                 example: "1995-06-15"
  *     responses:
  *       200:
- *         description: Account created
+ *         description: Account created successfully
  */
 // Create account (requires auth)
 router.post("/account/create", auth, fintechController.createAccount); //tested
