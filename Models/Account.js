@@ -26,6 +26,17 @@ const accountSchema = new mongoose.Schema(
       required: true,
     },
 
+    kycType: {
+  type: String,
+  enum: ["bvn", "nin"],
+  required: true
+},
+
+kycID: {
+  type: String,
+  required: true
+},
+
     balance: {
       type: Number,
       required: true,

@@ -11,6 +11,9 @@ const Transaction = require("../Models/Transaction");
 const { loadTemplate } = require("../Utils/emailTemplate");
 const { sendEmail } = require("../Utils/mailer");
 
+const BVN = require("../Models/BVN");
+const NIN = require("../Models/NIN");
+
 
 exports.generateToken = async (req, res) => {
   const { apiKey, apiSecret } = req.body;
@@ -132,28 +135,107 @@ exports.onboardFintech = async (req, res) => {
 
 
 exports.createAccount = async (req, res) => {
-  const { accountName } = req.body;
+  try {
+    const { kycID, dob, kycType } = req.body;
 
-  if (!accountName) {
-    return res.status(400).json({ message: "Account name is required" });
-  }
+    // 🔐 Auth check
+    if (!req.user.fintechId) {
+      return res.status(403).json({ message: "Unauthorized fintech access" });
+    }
 
-  if (!req.user.fintechId) {
-  return res.status(403).json({ message: "Unauthorized fintech access" });}
+    // 🔍 Validate input
+    if (!kycType || !kycID || !dob) {
+      return res.status(400).json({
+        message: "kycType, kycID and DOB are required"
+      });
+    }
 
-  const fintech = await Fintech.findById(req.user.fintechId);
+    let identityRecord;
 
-  const accountNumber = generateAccountNumber(fintech.bankCode);
+    // 🔄 KYC TYPE SWITCH
+    if (kycType.toLowerCase() === "bvn") {
+      identityRecord = await BVN.findOne({ bvn: kycID });
 
-  const account = await Account.create({
-    accountName,
-    accountNumber,
-    bankCode: fintech.bankCode,
-    fintechId: fintech._id,
-    balance: 15000
+      if (!identityRecord) {
+        return res.status(404).json({ message: "BVN not found" });
+      }
+
+    } else if (kycType.toLowerCase() === "nin") {
+      identityRecord = await NIN.findOne({ nin: kycID });
+
+      if (!identityRecord) {
+        return res.status(404).json({ message: "NIN not found" });
+      }
+
+    } else {
+      return res.status(400).json({
+        message: "Invalid kycType. Use BVN or NIN"
+      });
+    }
+
+    // 🔍 DOB VALIDATION
+     const parsedDate = new Date(dob);
+
+if (!dob || isNaN(parsedDate.getTime())) {
+  return res.status(400).json({
+    message: "Invalid date format. Use YYYY-MM-DD"
   });
+}
 
-  res.json(account);
+const inputDob = parsedDate.toISOString().split("T")[0];
+const recordDob = new Date(identityRecord.dob).toISOString().split("T")[0];
+
+if (inputDob !== recordDob) {
+  return res.status(400).json({
+    message: `${kycType} and DOB do not match`
+  });
+}
+
+    // ✅ Fetch fintech
+    const fintech = await Fintech.findById(req.user.fintechId);
+
+    // 🔢 Generate account number
+    const accountNumber = generateAccountNumber(fintech.bankCode);
+
+    // 🧠 Use verified data
+    const accountName = `${identityRecord.firstName} ${identityRecord.lastName}`;
+
+    // 🔒 Prevent duplicate account for same identity
+    const existing = await Account.findOne({
+      fintechId: fintech._id,
+      kycID
+    });
+
+    if (existing) {
+      return res.status(400).json({
+        message: `${kycType} already linked to an account`
+      });
+    }
+
+    // ✅ Create account
+    const account = await Account.create({
+      accountName,
+      accountNumber,
+      bankCode: fintech.bankCode,
+      fintechId: fintech._id,
+      balance: 15000,
+
+      // unified identity
+      kycType,
+      kycID
+    });
+
+    return res.json({
+      message: "Account created successfully",
+      account
+    });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Account creation failed"
+    });
+  }
 };
 
 
