@@ -5,7 +5,7 @@ const swaggerUI = require('swagger-ui-express')
 const express = require('express');
 const connectDB = require('./Configs/database');
 const ninRoutes = require('./Routes/NIN.routes');
-const bvnRoutes = require('./Routes/BVN');
+const bvnRoutes = require('./Routes/BVN.js');
 const fintechRoute = require('./Routes/fintechRoute');
 
 const app = express();
@@ -46,6 +46,6 @@ app.use("/api", fintechRoute);
 
 
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 8080, () => {
     console.log(`Server running on port ${process.env.PORT}`);
 });
