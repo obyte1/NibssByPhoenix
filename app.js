@@ -5,7 +5,7 @@ const swaggerUI = require('swagger-ui-express')
 const express = require('express');
 const connectDB = require('./Configs/database');
 const ninRoutes = require('./Routes/NIN.routes');
-const bvnRoutes = require('./Routes/BVN.js');
+const bvnRoutes = require('./Routes/bvnRoute.js');
 const fintechRoute = require('./Routes/fintechRoute');
 
 const app = express();
