@@ -1,21 +1,180 @@
 <!DOCTYPE html>
-<html>
-<body style="font-family: Arial; background:#f4f6f8; padding:20px;">
-  <div style="background:#fff; padding:20px; border-radius:8px;">
-    <h2 style="color:green;">Credit Alert ✅</h2>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Credit Alert — NibssByPhoenix</title>
+</head>
+<body style="margin:0;padding:0;background-color:#EEF2F7;font-family:Arial,sans-serif;">
 
-    <p>Hello {{fintechName}},</p>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#EEF2F7;padding:32px 16px;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;">
 
-    <p>You have received <strong>₦{{amount}}</strong>.</p>
+          <!-- HERO -->
+          <tr>
+            <td style="background-color:#063A20;border-radius:16px 16px 0 0;padding:40px 40px 32px;text-align:left;">
 
-    <ul>
-      <li><strong>Sender Account:</strong> {{from}}</li>
-      <li><strong>Your Account:</strong> {{to}}</li>
-      <li><strong>Reference:</strong> {{reference}}</li>
-      <li><strong>Current Balance:</strong> ₦{{balance}}</li>
-    </ul>
+              <!-- Badge -->
+              <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:20px;">
+                <tr>
+                  <td style="background-color:#0A5C30;border:1px solid #16803A;border-radius:100px;padding:5px 14px;">
+                    <table cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td style="width:8px;height:8px;background-color:#22C55E;border-radius:50%;vertical-align:middle;"></td>
+                        <td style="padding-left:7px;font-size:12px;color:#86EFAC;font-family:Arial,sans-serif;vertical-align:middle;">Credit received</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
 
-    <p>Thank you for using NibssByPhoenix.</p>
-  </div>
+              <!-- Amount -->
+              <p style="margin:0 0 4px;font-size:13px;color:#86EFAC;font-family:Arial,sans-serif;letter-spacing:0.06em;text-transform:uppercase;">Amount credited</p>
+              <p style="margin:0 0 10px;font-size:42px;font-weight:bold;color:#FFFFFF;font-family:Arial,sans-serif;line-height:1.1;">&#8358;{{amount}}</p>
+              <p style="margin:0;font-size:14px;color:#6EE7A0;font-family:Arial,sans-serif;">has been credited to your account</p>
+            </td>
+          </tr>
+
+          <!-- GREEN ACCENT BAR -->
+          <tr>
+            <td style="background-color:#16A34A;padding:0;font-size:0;line-height:4px;height:4px;">&nbsp;</td>
+          </tr>
+
+          <!-- BODY -->
+          <tr>
+            <td style="background-color:#FFFFFF;border-left:1px solid #E2E8F0;border-right:1px solid #E2E8F0;padding:36px 40px;">
+
+              <p style="margin:0 0 6px;font-size:16px;color:#1F2937;font-family:Arial,sans-serif;">
+                Hello, <strong style="font-weight:bold;">{{fintechName}}</strong>
+              </p>
+              <p style="margin:0 0 28px;font-size:14px;color:#6B7280;font-family:Arial,sans-serif;line-height:1.7;">
+                A credit transaction has been successfully processed on your account. Please find the details below.
+              </p>
+
+              <!-- Transaction detail cards -->
+              <p style="margin:0 0 12px;font-size:11px;font-weight:bold;color:#9CA3AF;font-family:Arial,sans-serif;letter-spacing:0.08em;text-transform:uppercase;">Transaction Details</p>
+
+              <!-- Row 1 -->
+              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
+                <tr>
+                  <td width="48%" valign="top" style="padding-right:8px;">
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td style="background-color:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:14px 16px;">
+                          <p style="margin:0 0 4px;font-size:11px;color:#9CA3AF;font-family:Arial,sans-serif;">Sender Account</p>
+                          <p style="margin:0;font-size:14px;font-weight:bold;color:#1F2937;font-family:'Courier New',monospace;">{{from}}</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td width="48%" valign="top" style="padding-left:8px;">
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td style="background-color:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:14px 16px;">
+                          <p style="margin:0 0 4px;font-size:11px;color:#9CA3AF;font-family:Arial,sans-serif;">Your Account</p>
+                          <p style="margin:0;font-size:14px;font-weight:bold;color:#1F2937;font-family:'Courier New',monospace;">{{to}}</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Row 2 -->
+              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:28px;">
+                <tr>
+                  <td width="48%" valign="top" style="padding-right:8px;">
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td style="background-color:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:14px 16px;">
+                          <p style="margin:0 0 4px;font-size:11px;color:#9CA3AF;font-family:Arial,sans-serif;">Reference</p>
+                          <p style="margin:0;font-size:13px;font-weight:bold;color:#2563EB;font-family:'Courier New',monospace;word-break:break-all;">{{reference}}</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td width="48%" valign="top" style="padding-left:8px;">
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td style="background-color:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:14px 16px;">
+                          <p style="margin:0 0 4px;font-size:11px;color:#16A34A;font-family:Arial,sans-serif;">Current Balance</p>
+                          <p style="margin:0;font-size:16px;font-weight:bold;color:#15803D;font-family:Arial,sans-serif;">&#8358;{{balance}}</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Divider -->
+              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:24px;">
+                <tr>
+                  <td style="border-top:1px solid #E2E8F0;font-size:0;line-height:0;">&nbsp;</td>
+                </tr>
+              </table>
+
+              <!-- Success confirmation banner -->
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="background-color:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:16px 20px;">
+                    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                      <tr>
+                        <td valign="middle" style="padding-right:12px;width:36px;">
+                          <table cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                              <td style="width:32px;height:32px;background-color:#16A34A;border-radius:50%;text-align:center;vertical-align:middle;">
+                                <span style="font-size:16px;color:#FFFFFF;line-height:32px;display:block;">&#10003;</span>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                        <td valign="middle">
+                          <p style="margin:0 0 2px;font-size:14px;font-weight:bold;color:#15803D;font-family:Arial,sans-serif;">Transaction successful</p>
+                          <p style="margin:0;font-size:13px;color:#16A34A;font-family:Arial,sans-serif;">This credit has been applied to your account balance.</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+            </td>
+          </tr>
+
+          <!-- FOOTER -->
+          <tr>
+            <td style="background-color:#F1F5F9;border:1px solid #E2E8F0;border-top:none;border-radius:0 0 16px 16px;padding:20px 40px;">
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td valign="middle">
+                    <table cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td style="width:30px;height:30px;background-color:#063A20;border-radius:6px;text-align:center;vertical-align:middle;">
+                          <span style="font-size:15px;color:#22C55E;font-weight:bold;font-family:Arial,sans-serif;line-height:30px;display:block;">N</span>
+                        </td>
+                        <td style="padding-left:10px;">
+                          <p style="margin:0;font-size:13px;font-weight:bold;color:#1F2937;font-family:Arial,sans-serif;">NibssByPhoenix</p>
+                          <p style="margin:0;font-size:11px;color:#9CA3AF;font-family:Arial,sans-serif;">TS Academy — Phoenix Cohort</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td align="right" valign="middle">
+                    <p style="margin:0;font-size:12px;color:#9CA3AF;font-family:Arial,sans-serif;text-align:right;line-height:1.6;">
+                      This is an automated notification.<br/>Please do not reply to this email.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+
 </body>
 </html>

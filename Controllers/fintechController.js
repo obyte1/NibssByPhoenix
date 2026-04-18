@@ -119,7 +119,7 @@ exports.onboardFintech = async (req, res) => {
       apiSecret,
       bankCode,
       bankName,
-      baseUrl: process.env.BASE_URL || "http://localhost:3000",
+      Swagger_Documentation: process.env.BASE_URL || "https://nibssbyphoenix.onrender.com/api/docs/",
     });
 
     // 🔥 Send email

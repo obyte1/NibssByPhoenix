@@ -1,49 +1,221 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Welcome to NibssByPhoenix</title>
 </head>
-<body style="font-family: Arial, sans-serif; background-color: #f4f6f8; padding: 20px;">
-  <div style="max-width: 600px; margin: auto; background: #fff; padding: 20px; border-radius: 8px;">
-    
-    <h2 style="color: #2c3e50;">Welcome to NibssByPhoenix 🚀</h2>
+<body style="margin:0;padding:0;background-color:#EEF2F7;font-family:Arial,sans-serif;">
 
-    <p>Hello <strong>{{name}}</strong>,</p>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#EEF2F7;padding:32px 16px;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;">
 
-    <p>Your fintech has been successfully onboarded. Below are your credentials:</p>
+          <!-- HERO BANNER -->
+          <tr>
+            <td style="background-color:#0B1934;border-radius:16px 16px 0 0;padding:44px 40px 36px;text-align:left;">
 
-    <h3>🔐 API Credentials</h3>
-    <ul>
-      <li><strong>API Key:</strong> {{apiKey}}</li>
-      <li><strong>API Secret:</strong> {{apiSecret}}</li>
-      <li><strong>Bank Code:</strong> {{bankCode}}</li>
-      <li><strong>Bank Name:</strong> {{bankName}}</li>
-    </ul>
+              <!-- Live badge -->
+              <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:20px;">
+                <tr>
+                  <td style="background-color:#1A2E55;border:1px solid #2D4E8A;border-radius:100px;padding:5px 14px;">
+                    <table cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td style="width:8px;height:8px;background-color:#3D8BFD;border-radius:50%;vertical-align:middle;"></td>
+                        <td style="padding-left:7px;font-size:12px;color:#7CB9FF;font-family:Arial,sans-serif;vertical-align:middle;">Onboarding successful</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
 
-    <h3>📘 Integration Guide</h3>
-    <p>Use the following endpoints to integrate:</p>
+              <!-- Headline -->
+              <p style="margin:0 0 8px;font-size:28px;font-weight:bold;color:#FFFFFF;font-family:Arial,sans-serif;line-height:1.25;">
+                Welcome to <span style="color:#5BA4F5;">NibssByPhoenix</span>
+              </p>
+              <p style="margin:0;font-size:14px;color:#8BA7CC;font-family:Arial,sans-serif;line-height:1.7;">
+                Your fintech is live on the Nigerian Interbank Settlement layer.<br/>Here are your credentials and everything you need to start integrating.
+              </p>
+            </td>
+          </tr>
 
-    <ul>
-      <li><strong>Generate Token:</strong> POST /auth/token</li>
-      <li><strong>Create Account:</strong> POST /account/create</li>
-      <li><strong>Name Enquiry:</strong> GET /account/name-enquiry/:accountNumber</li>
-      <li><strong>Transfer:</strong> POST /transfer</li>
-      <li><strong>Transaction Status:</strong> GET /transaction/:ref</li>
-    </ul>
+          <!-- BODY -->
+          <tr>
+            <td style="background-color:#FFFFFF;border-left:1px solid #E2E8F0;border-right:1px solid #E2E8F0;padding:36px 40px;">
 
-    <p><strong>Base URL:</strong> {{baseUrl}}</p>
+              <p style="margin:0 0 6px;font-size:16px;color:#1F2937;font-family:Arial,sans-serif;">
+                Hello, <strong style="font-weight:bold;">{{name}}</strong>
+              </p>
+              <p style="margin:0 0 28px;font-size:14px;color:#6B7280;font-family:Arial,sans-serif;line-height:1.7;">
+                Your fintech has been successfully registered on the NIBSS platform. Below are your API credentials — keep these secure and do not expose them publicly.
+              </p>
 
     <p>For detailed API documentation and integration examples, please refer to our <a href="https://docs.google.com/document/d/13wSkUkYtPPy43iKw65ELT1dvBfJ2am0un4gcsuTMu28/edit?usp=sharing" target="_blank">API Documentation</a>.</p>
 
     <p>⚠️ Keep your API Secret safe. Do not expose it publicly.</p>
 
-    <hr />
+              <!-- Credential cards grid -->
+              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:28px;">
+                <tr>
+                  <td width="48%" valign="top" style="padding-right:8px;padding-bottom:10px;">
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td style="background-color:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:14px 16px;">
+                          <p style="margin:0 0 4px;font-size:11px;color:#9CA3AF;font-family:Arial,sans-serif;">API Key</p>
+                          <p style="margin:0;font-size:13px;font-weight:bold;color:#2563EB;font-family:'Courier New',monospace;word-break:break-all;">{{apiKey}}</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td width="48%" valign="top" style="padding-left:8px;padding-bottom:10px;">
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td style="background-color:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:14px 16px;">
+                          <p style="margin:0 0 4px;font-size:11px;color:#9CA3AF;font-family:Arial,sans-serif;">API Secret</p>
+                          <p style="margin:0;font-size:13px;font-weight:bold;color:#374151;font-family:'Courier New',monospace;word-break:break-all;">{{apiSecret}}</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="48%" valign="top" style="padding-right:8px;">
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td style="background-color:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:14px 16px;">
+                          <p style="margin:0 0 4px;font-size:11px;color:#9CA3AF;font-family:Arial,sans-serif;">Bank Code</p>
+                          <p style="margin:0;font-size:13px;font-weight:bold;color:#2563EB;font-family:'Courier New',monospace;">{{bankCode}}</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td width="48%" valign="top" style="padding-left:8px;">
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td style="background-color:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:14px 16px;">
+                          <p style="margin:0 0 4px;font-size:11px;color:#9CA3AF;font-family:Arial,sans-serif;">Bank Name</p>
+                          <p style="margin:0;font-size:13px;font-weight:bold;color:#374151;font-family:'Courier New',monospace;">{{bankName}}</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
 
-    <p style="font-size: 12px; color: gray;">
-      NibssByPhoenix Team
-    </p>
+              <!-- Base URL -->
+              <p style="margin:0 0 12px;font-size:11px;font-weight:bold;color:#9CA3AF;font-family:Arial,sans-serif;letter-spacing:0.08em;text-transform:uppercase;">Swagger URL</p>
+              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:28px;">
+                <tr>
+                  <td style="background-color:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:14px 16px;">
+                    <p style="margin:0;font-size:13px;font-weight:bold;color:#2563EB;font-family:'Courier New',monospace;">{{Swagger_Documentation}}</p>
+                  </td>
+                </tr>
+              </table>
 
-  </div>
+              <!-- Divider -->
+              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:28px;">
+                <tr>
+                  <td style="border-top:1px solid #E2E8F0;font-size:0;line-height:0;">&nbsp;</td>
+                </tr>
+              </table>
+
+              <!-- Integration Guide section label -->
+              <p style="margin:0 0 12px;font-size:11px;font-weight:bold;color:#9CA3AF;font-family:Arial,sans-serif;letter-spacing:0.08em;text-transform:uppercase;">Integration Guide</p>
+
+              <!-- Guide card -->
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="background-color:#0B1934;border-radius:12px;padding:24px 28px;">
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <!-- Icon -->
+                        <td width="48" valign="top" style="padding-right:16px;">
+                          <table cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                              <td style="width:44px;height:44px;background-color:#1A2E55;border:1px solid #2D4E8A;border-radius:10px;text-align:center;vertical-align:middle;">
+                                <img src="https://img.icons8.com/ios/24/5BA4F5/document--v1.png" width="22" height="22" alt="docs" style="display:block;margin:11px auto;" />
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                        <!-- Content -->
+                        <td valign="top">
+                          <p style="margin:0 0 4px;font-size:15px;font-weight:bold;color:#FFFFFF;font-family:Arial,sans-serif;">Full API Integration Guide</p>
+                          <p style="margin:0 0 16px;font-size:13px;color:#7A99BB;font-family:Arial,sans-serif;line-height:1.6;">Step-by-step documentation covering authentication, account operations, transfers, identity verification, and transaction status queries.</p>
+                          <!-- CTA Button -->
+                          <table cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                              <td style="background-color:#1D3461;border:1px solid #2D5A9E;border-radius:8px;">
+                                <a href="https://drive.google.com/drive/folders/1Mqw1ZW-XtiOXaF9rplB_SYPM98vsWmQt?usp=sharing"
+                                   target="_blank"
+                                   style="display:inline-block;padding:10px 18px;font-size:13px;font-weight:bold;color:#5BA4F5;font-family:Arial,sans-serif;text-decoration:none;white-space:nowrap;">
+                                  &#x2197; Open integration guide
+                                </a>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Warning box -->
+              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:20px;">
+                <tr>
+                  <td style="background-color:#FFFBF0;border:1px solid #F5D77A;border-radius:10px;padding:14px 16px;">
+                    <table cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td valign="top" style="padding-right:10px;font-size:16px;line-height:1;">&#9888;</td>
+                        <td>
+                          <p style="margin:0;font-size:13px;color:#6B7280;font-family:Arial,sans-serif;line-height:1.6;">
+                            <strong style="color:#B45309;">Keep your API Secret private.</strong> Never expose it in client-side code, public repositories, or shared environments. Rotate it immediately if you suspect it has been compromised.
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+            </td>
+          </tr>
+
+          <!-- FOOTER -->
+          <tr>
+            <td style="background-color:#F1F5F9;border:1px solid #E2E8F0;border-top:none;border-radius:0 0 16px 16px;padding:20px 40px;">
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td valign="middle">
+                    <table cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td style="width:30px;height:30px;background-color:#0B1934;border-radius:6px;text-align:center;vertical-align:middle;padding-right:10px;">
+                          <span style="font-size:16px;color:#5BA4F5;font-weight:bold;font-family:Arial,sans-serif;line-height:30px;">N</span>
+                        </td>
+                        <td style="padding-left:10px;">
+                          <p style="margin:0;font-size:13px;font-weight:bold;color:#1F2937;font-family:Arial,sans-serif;">NibssByPhoenix</p>
+                          <p style="margin:0;font-size:11px;color:#9CA3AF;font-family:Arial,sans-serif;">TS Academy — Phoenix Cohort</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td align="right" valign="middle">
+                    <p style="margin:0;font-size:12px;color:#9CA3AF;font-family:Arial,sans-serif;text-align:right;line-height:1.6;">
+                      Built by Onyekachi Obute<br/>
+                      John Oloruntobi &middot; Jude Ani
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+
 </body>
 </html>
