@@ -57,7 +57,7 @@ router.post('/insertBvn', bvnController.insertBVN);
  * /api/validateBvn:
  *   post:
  *     summary: Validate a BVN
- *     tags: [BVN]
+ *     tags: [bvn]
  *     requestBody:
  *       required: true
  *       content:
