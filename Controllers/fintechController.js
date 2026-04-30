@@ -447,7 +447,9 @@ exports.transfer = async (req, res) => {
         message: "Senders fintech not found"
       });
     }
-    const receiverFintech = await Fintech.findById(receiver.fintechId);
+
+    
+    const receiverFintech = await Fintech.findById(receiver.fintechId).session(session);
 
     if (!receiverFintech) {
       await session.abortTransaction();
@@ -501,24 +503,28 @@ exports.transfer = async (req, res) => {
     }
 
     // Credit email
-    try {
-      const creditHtml = loadTemplate("creditEmail", {
-        fintechName: receiverFintech.name,
-        amount,
-        from,
-        to,
-        reference,
-        balance: receiver.balance
-      });
+    if (!receiverFintech) {
+  console.error("Receiver fintech not found, skipping credit email");
+} else {
+  try {
+    const creditHtml = loadTemplate("creditEmail", {
+      fintechName: receiverFintech.bankName || "Customer",
+      amount,
+      from,
+      to,
+      reference,
+      balance: receiver.balance
+    });
 
-      await sendEmail(
-        receiverFintech.email,
-        "Credit Alert - NibssByPhoenix",
-        creditHtml
-      );
-    } catch (e) {
-      console.error("Credit email failed:", e.message);
-    }
+    await sendEmail(
+      receiverFintech.email,
+      "Credit Alert - NibssByPhoenix",
+      creditHtml
+    );
+  } catch (e) {
+    console.error("Credit email failed:", e.message);
+  }
+}
 
     return res.json(tx);
 
