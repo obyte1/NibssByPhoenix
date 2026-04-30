@@ -344,20 +344,20 @@ if (amount <= 0) {
     });
 
     // 📩 Sender Email (Debit)
-    const debitHtml = loadTemplate("debitEmail", {
-      fintechName: senderFintech.name,
-      amount,
-      from,
-      to,
-      reference,
-      balance: sender.balance
-    });
+    // const debitHtml = loadTemplate("debitEmail", {
+    //   fintechName: senderFintech.name,
+    //   amount,
+    //   from,
+    //   to,
+    //   reference,
+    //   balance: sender.balance
+    // });
 
-    await sendEmail(
-      senderFintech.email,
-      "Debit Alert - NibssByPhoenix",
-      debitHtml
-    );
+    // await sendEmail(
+    //   senderFintech.email,
+    //   "Debit Alert - NibssByPhoenix",
+    //   debitHtml
+    // );
 
     // 📩 Receiver Email (Credit)
     // const creditHtml = loadTemplate("creditEmail", {
