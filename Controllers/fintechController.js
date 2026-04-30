@@ -272,270 +272,270 @@ exports.getFintechAccounts = async (req, res) => {
 };
 
 
-// exports.transfer = async (req, res) => {
-//   try {
-
-//     const { from, to } = req.body;
-//     const amount = Number(req.body.amount);
-
-//     if (!from || !to) {
-//   return res.status(400).json({
-//     message: "Both sender (from) and receiver (to) account numbers are required"
-//   });}
-
-// if(!amount){
-//   return res.status(400).json({
-//     message: "Amount is required"
-//   });
-// }
-
-// // Validate
-// if (!Number.isFinite(amount)) {
-//   return res.status(400).json({
-//     message: "Invalid amount, Amount must be a number"
-//   });
-// }
-
-
-
-// if (amount <= 0) {
-//   return res.status(400).json({
-//     message: "Amount must be greater than zero"
-//   });
-// }
-
-//     if (amount <= 0) {
-//       return res.status(400).json({ message: "Amount must be greater than zero" });
-//     }
-
-//     const sender = await Account.findOne({ accountNumber: from });
-//     const receiver = await Account.findOne({ accountNumber: to });
-
-//     if (sender.fintechId.toString() !== req.user.fintechId) {
-//   return res.status(403).json({ message: "Unauthorized" });}
-
-//     if (!sender || !receiver) {
-//       return res.status(404).json({ message: "Invalid account" });
-//     }
-
-//     if (sender.balance < amount) {
-//       return res.status(400).json({ message: "Insufficient funds" });
-//     }
-
-//     // 🔐 Get fintechs
-//     const senderFintech = await Fintech.findById(sender.fintechId);
-//     const receiverFintech = await Fintech.findById(receiver.fintechId);
-
-//     // 💸 Perform transaction
-//     sender.balance -= amount;
-//     receiver.balance += amount;
-
-//     await sender.save();
-//     await receiver.save();
-
-//     const reference = "TX" + Date.now();
-
-//     const tx = await Transaction.create({
-//       reference,
-//       senderAccount: from,
-//       receiverAccount: to,
-//       amount,
-//       status: "SUCCESS"
-//     });
-
-//     // 📩 Sender Email (Debit)
-//     const debitHtml = loadTemplate("debitEmail", {
-//       fintechName: senderFintech.name,
-//       amount,
-//       from,
-//       to,
-//       reference,
-//       balance: sender.balance
-//     });
-
-//     await sendEmail(
-//       senderFintech.email,
-//       "Debit Alert - NibssByPhoenix",
-//       debitHtml
-//     );
-
-//     // 📩 Receiver Email (Credit)
-//     const creditHtml = loadTemplate("creditEmail", {
-//       fintechName: receiverFintech.name,
-//       amount,
-//       from,
-//       to,
-//       reference,
-//       balance: receiver.balance
-//     });
-
-//     await sendEmail(
-//       receiverFintech.email,
-//       "Credit Alert - NibssByPhoenix",
-//       creditHtml
-//     );
-
-//     res.json(tx);
-
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: "Transfer failed" });
-//   }
-// };
-
 exports.transfer = async (req, res) => {
-  const session = await mongoose.startSession();
-  session.startTransaction();
-
   try {
+
     const { from, to } = req.body;
     const amount = Number(req.body.amount);
 
-    // ✅ Basic validation
     if (!from || !to) {
-      return res.status(400).json({
-        message: "Both sender (from) and receiver (to) account numbers are required"
-      });
-    }
-
-    if (from === to) {
   return res.status(400).json({
-    message: "You cannot transfer to the same account"
+    message: "Both sender (from) and receiver (to) account numbers are required"
   });}
 
-    if (!amount || !Number.isFinite(amount)) {
-      return res.status(400).json({
-        message: "Invalid amount"
-      });
-    }
+if(!amount){
+  return res.status(400).json({
+    message: "Amount is required"
+  });
+}
+
+// Validate
+if (!Number.isFinite(amount)) {
+  return res.status(400).json({
+    message: "Invalid amount, Amount must be a number"
+  });
+}
+
+
+
+if (amount <= 0) {
+  return res.status(400).json({
+    message: "Amount must be greater than zero"
+  });
+}
 
     if (amount <= 0) {
-      return res.status(400).json({
-        message: "Amount must be greater than zero"
-      });
+      return res.status(400).json({ message: "Amount must be greater than zero" });
     }
 
-    // 🔍 Fetch accounts inside transaction
-    const sender = await Account.findOne({ accountNumber: from }).session(session);
-    const receiver = await Account.findOne({ accountNumber: to }).session(session);
+    const sender = await Account.findOne({ accountNumber: from });
+    const receiver = await Account.findOne({ accountNumber: to });
+
+    if (sender.fintechId.toString() !== req.user.fintechId) {
+  return res.status(403).json({ message: "Unauthorized" });}
 
     if (!sender || !receiver) {
-      await session.abortTransaction();
-      session.endSession();
       return res.status(404).json({ message: "Invalid account" });
     }
 
-    // 🔐 Authorization check
-    if (sender.fintechId.toString() !== req.user.fintechId) {
-      await session.abortTransaction();
-      session.endSession();
-      return res.status(403).json({ message: "Unauthorized: Sender is not the owner of the account" });
-    }
-
     if (sender.balance < amount) {
-      await session.abortTransaction();
-      session.endSession();
       return res.status(400).json({ message: "Insufficient funds" });
     }
 
-    // 🔍 Fetch fintechs
-    const senderFintech = await Fintech.findById(sender.fintechId).session(session);
-     if (!senderFintech) {
-      await session.abortTransaction();
-      session.endSession();
-      return res.status(404).json({
-        message: "Senders fintech not found"
-      });
-    }
+    // 🔐 Get fintechs
+    const senderFintech = await Fintech.findById(sender.fintechId);
+    const receiverFintech = await Fintech.findById(receiver.fintechId);
 
-    
-    const receiverFintech = await Fintech.findById(receiver.fintechId).session(session);
-
-    if (!receiverFintech) {
-      await session.abortTransaction();
-      session.endSession();
-      return res.status(404).json({
-        message: "Receiver fintech not found"
-      });
-    }
-
-    // 💸 Perform transfer
+    // 💸 Perform transaction
     sender.balance -= amount;
     receiver.balance += amount;
 
-    await sender.save({ session });
-    await receiver.save({ session });
+    await sender.save();
+    await receiver.save();
 
     const reference = "TX" + Date.now();
 
-    const [tx] = await Transaction.create([{
+    const tx = await Transaction.create({
       reference,
       senderAccount: from,
       receiverAccount: to,
       amount,
       status: "SUCCESS"
-    }], { session });
+    });
 
-    // ✅ Commit transaction (VERY IMPORTANT)
-    await session.commitTransaction();
-    session.endSession();
+    // 📩 Sender Email (Debit)
+    const debitHtml = loadTemplate("debitEmail", {
+      fintechName: senderFintech.name,
+      amount,
+      from,
+      to,
+      reference,
+      balance: sender.balance
+    });
 
-    // 📩 Send emails (DO NOT break transfer if they fail)
+    await sendEmail(
+      senderFintech.email,
+      "Debit Alert - NibssByPhoenix",
+      debitHtml
+    );
 
-//     // Debit email
-//     try {
-//       const debitHtml = loadTemplate("debitEmail", {
-//         fintechName: senderFintech.name,
-//         amount,
-//         from,
-//         to,
-//         reference,
-//         balance: sender.balance
-//       });
+    // 📩 Receiver Email (Credit)
+    const creditHtml = loadTemplate("creditEmail", {
+      fintechName: receiverFintech.name,
+      amount,
+      from,
+      to,
+      reference,
+      balance: receiver.balance
+    });
 
-//       await sendEmail(
-//         senderFintech.email,
-//         "Debit Alert - NibssByPhoenix",
-//         debitHtml
-//       );
-//     } catch (e) {
-//       console.error("Debit email failed:", e.message);
-//     }
+    await sendEmail(
+      receiverFintech.email,
+      "Credit Alert - NibssByPhoenix",
+      creditHtml
+    );
 
-//     // Credit email
-//     if (!receiverFintech) {
-//   console.error("Receiver fintech not found, skipping credit email");
-// } else {
-//   try {
-//     const creditHtml = loadTemplate("creditEmail", {
-//       fintechName: receiverFintech.bankName || "Customer",
-//       amount,
-//       from,
-//       to,
-//       reference,
-//       balance: receiver.balance
-//     });
-
-//     await sendEmail(
-//       receiverFintech.email,
-//       "Credit Alert - NibssByPhoenix",
-//       creditHtml
-//     );
-//   } catch (e) {
-//     console.error("Credit email failed:", e.message);
-//   }
-// }
-
-    return res.json(tx);
+    res.json(tx);
 
   } catch (error) {
-    await session.abortTransaction();
-    session.endSession();
-
-    console.error("TRANSFER ERROR:", error);
-    return res.status(500).json({ message: "Transfer failed" });
+    console.error(error);
+    res.status(500).json({ message: "Transfer failed" });
   }
 };
+
+// exports.transfer = async (req, res) => {
+//   const session = await mongoose.startSession();
+//   session.startTransaction();
+
+//   try {
+//     const { from, to } = req.body;
+//     const amount = Number(req.body.amount);
+
+//     // ✅ Basic validation
+//     if (!from || !to) {
+//       return res.status(400).json({
+//         message: "Both sender (from) and receiver (to) account numbers are required"
+//       });
+//     }
+
+//     if (from === to) {
+//   return res.status(400).json({
+//     message: "You cannot transfer to the same account"
+//   });}
+
+//     if (!amount || !Number.isFinite(amount)) {
+//       return res.status(400).json({
+//         message: "Invalid amount"
+//       });
+//     }
+
+//     if (amount <= 0) {
+//       return res.status(400).json({
+//         message: "Amount must be greater than zero"
+//       });
+//     }
+
+//     // 🔍 Fetch accounts inside transaction
+//     const sender = await Account.findOne({ accountNumber: from }).session(session);
+//     const receiver = await Account.findOne({ accountNumber: to }).session(session);
+
+//     if (!sender || !receiver) {
+//       await session.abortTransaction();
+//       session.endSession();
+//       return res.status(404).json({ message: "Invalid account" });
+//     }
+
+//     // 🔐 Authorization check
+//     if (sender.fintechId.toString() !== req.user.fintechId) {
+//       await session.abortTransaction();
+//       session.endSession();
+//       return res.status(403).json({ message: "Unauthorized: Sender is not the owner of the account" });
+//     }
+
+//     if (sender.balance < amount) {
+//       await session.abortTransaction();
+//       session.endSession();
+//       return res.status(400).json({ message: "Insufficient funds" });
+//     }
+
+//     // 🔍 Fetch fintechs
+//     const senderFintech = await Fintech.findById(sender.fintechId).session(session);
+//      if (!senderFintech) {
+//       await session.abortTransaction();
+//       session.endSession();
+//       return res.status(404).json({
+//         message: "Senders fintech not found"
+//       });
+//     }
+
+    
+//     const receiverFintech = await Fintech.findById(receiver.fintechId).session(session);
+
+//     if (!receiverFintech) {
+//       await session.abortTransaction();
+//       session.endSession();
+//       return res.status(404).json({
+//         message: "Receiver fintech not found"
+//       });
+//     }
+
+//     // 💸 Perform transfer
+//     sender.balance -= amount;
+//     receiver.balance += amount;
+
+//     await sender.save({ session });
+//     await receiver.save({ session });
+
+//     const reference = "TX" + Date.now();
+
+//     const [tx] = await Transaction.create([{
+//       reference,
+//       senderAccount: from,
+//       receiverAccount: to,
+//       amount,
+//       status: "SUCCESS"
+//     }], { session });
+
+//     // ✅ Commit transaction (VERY IMPORTANT)
+//     await session.commitTransaction();
+//     session.endSession();
+
+//     // 📩 Send emails (DO NOT break transfer if they fail)
+
+// //     // Debit email
+// //     try {
+// //       const debitHtml = loadTemplate("debitEmail", {
+// //         fintechName: senderFintech.name,
+// //         amount,
+// //         from,
+// //         to,
+// //         reference,
+// //         balance: sender.balance
+// //       });
+
+// //       await sendEmail(
+// //         senderFintech.email,
+// //         "Debit Alert - NibssByPhoenix",
+// //         debitHtml
+// //       );
+// //     } catch (e) {
+// //       console.error("Debit email failed:", e.message);
+// //     }
+
+// //     // Credit email
+// //     if (!receiverFintech) {
+// //   console.error("Receiver fintech not found, skipping credit email");
+// // } else {
+// //   try {
+// //     const creditHtml = loadTemplate("creditEmail", {
+// //       fintechName: receiverFintech.bankName || "Customer",
+// //       amount,
+// //       from,
+// //       to,
+// //       reference,
+// //       balance: receiver.balance
+// //     });
+
+// //     await sendEmail(
+// //       receiverFintech.email,
+// //       "Credit Alert - NibssByPhoenix",
+// //       creditHtml
+// //     );
+// //   } catch (e) {
+// //     console.error("Credit email failed:", e.message);
+// //   }
+// // }
+
+//     return res.json(tx);
+
+//   } catch (error) {
+//     await session.abortTransaction();
+//     session.endSession();
+
+//     console.error("TRANSFER ERROR:", error);
+//     return res.status(500).json({ message: "Transfer failed" });
+//   }
+// };
 
 
 exports.getTransaction = async (req, res) => {
