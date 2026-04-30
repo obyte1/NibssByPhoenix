@@ -482,49 +482,49 @@ exports.transfer = async (req, res) => {
 
     // 📩 Send emails (DO NOT break transfer if they fail)
 
-    // Debit email
-    try {
-      const debitHtml = loadTemplate("debitEmail", {
-        fintechName: senderFintech.name,
-        amount,
-        from,
-        to,
-        reference,
-        balance: sender.balance
-      });
+//     // Debit email
+//     try {
+//       const debitHtml = loadTemplate("debitEmail", {
+//         fintechName: senderFintech.name,
+//         amount,
+//         from,
+//         to,
+//         reference,
+//         balance: sender.balance
+//       });
 
-      await sendEmail(
-        senderFintech.email,
-        "Debit Alert - NibssByPhoenix",
-        debitHtml
-      );
-    } catch (e) {
-      console.error("Debit email failed:", e.message);
-    }
+//       await sendEmail(
+//         senderFintech.email,
+//         "Debit Alert - NibssByPhoenix",
+//         debitHtml
+//       );
+//     } catch (e) {
+//       console.error("Debit email failed:", e.message);
+//     }
 
-    // Credit email
-    if (!receiverFintech) {
-  console.error("Receiver fintech not found, skipping credit email");
-} else {
-  try {
-    const creditHtml = loadTemplate("creditEmail", {
-      fintechName: receiverFintech.bankName || "Customer",
-      amount,
-      from,
-      to,
-      reference,
-      balance: receiver.balance
-    });
+//     // Credit email
+//     if (!receiverFintech) {
+//   console.error("Receiver fintech not found, skipping credit email");
+// } else {
+//   try {
+//     const creditHtml = loadTemplate("creditEmail", {
+//       fintechName: receiverFintech.bankName || "Customer",
+//       amount,
+//       from,
+//       to,
+//       reference,
+//       balance: receiver.balance
+//     });
 
-    await sendEmail(
-      receiverFintech.email,
-      "Credit Alert - NibssByPhoenix",
-      creditHtml
-    );
-  } catch (e) {
-    console.error("Credit email failed:", e.message);
-  }
-}
+//     await sendEmail(
+//       receiverFintech.email,
+//       "Credit Alert - NibssByPhoenix",
+//       creditHtml
+//     );
+//   } catch (e) {
+//     console.error("Credit email failed:", e.message);
+//   }
+// }
 
     return res.json(tx);
 
