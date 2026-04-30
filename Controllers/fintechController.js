@@ -360,20 +360,20 @@ if (amount <= 0) {
     );
 
     // 📩 Receiver Email (Credit)
-    const creditHtml = loadTemplate("creditEmail", {
-      fintechName: receiverFintech.name,
-      amount,
-      from,
-      to,
-      reference,
-      balance: receiver.balance
-    });
+    // const creditHtml = loadTemplate("creditEmail", {
+    //   fintechName: receiverFintech.name,
+    //   amount,
+    //   from,
+    //   to,
+    //   reference,
+    //   balance: receiver.balance
+    // });
 
-    await sendEmail(
-      receiverFintech.email,
-      "Credit Alert - NibssByPhoenix",
-      creditHtml
-    );
+    // await sendEmail(
+    //   receiverFintech.email,
+    //   "Credit Alert - NibssByPhoenix",
+    //   creditHtml
+    // );
 
     res.json(tx);
 
