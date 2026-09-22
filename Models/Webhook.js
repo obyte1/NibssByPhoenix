@@ -1,10 +1,12 @@
 const mongoose = require("mongoose");
 
-const webhookLogSchema = new mongoose.Schema(
+const webhookSchema = new mongoose.Schema(
   {
     fintechId: {
-      type: string,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Fintech",
       required: true,
+      unique: true,
     },
 
     url: {
@@ -13,21 +15,9 @@ const webhookLogSchema = new mongoose.Schema(
       trim: true,
     },
 
-    event: {
-      type: String,
-      enum: ["TRANSACTION_SUCCESS", "FAILED"],
-      required: true,
-    },
-
-    payload: {
-      type: Object, // store JSON payload sent to fintech
-      required: true,
-    },
-
-    status: {
-      type: String,
-      enum: ["PENDING", "SUCCESS", "FAILED"],
-      default: "PENDING",
+    active: {
+      type: Boolean,
+      default: true,
     },
   },
   {
@@ -36,4 +26,4 @@ const webhookLogSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("WebhookLog", webhookLogSchema);
+module.exports = mongoose.model("Webhook", webhookSchema);
