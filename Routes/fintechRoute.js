@@ -60,6 +60,64 @@ router.post("/fintech/onboard", fintechController.onboardFintech); //tested
 
 /**
  * @swagger
+ * /api/fintech/webhook:
+ *   post:
+ *     summary: Register a webhook URL for inward transaction notifications
+ *     description: |
+ *       Registers the authenticated fintech's HTTPS or HTTP endpoint for inward transaction notifications.
+ *       When another fintech sends money to one of this fintech's accounts, NibssByPhoenix sends a POST request
+ *       to the registered URL after the transfer is committed successfully. Only one webhook URL is stored per
+ *       fintech; submitting this endpoint again replaces the previously registered URL.
+ *
+ *       The notification request includes the `X-Webhook-Event: INWARD_TRANSACTION` header and this JSON body:
+ *       `{ "event": "INWARD_TRANSACTION", "data": { "reference": "TX...", "senderAccount": "...", "receiverAccount": "...", "amount": 1000, "status": "SUCCESS", "receivedAt": "2026-09-22T12:00:00.000Z" } }`.
+ *       The receiving fintech should respond with a 2xx status code. Webhook delivery failures are logged and do
+ *       not reverse or fail the completed transfer.
+ *     tags: [Fintech]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - url
+ *             properties:
+ *               url:
+ *                 type: string
+ *                 format: uri
+ *                 description: HTTP or HTTPS URL that will receive inward transaction notifications.
+ *                 example: https://partner.example.com/webhooks/transactions
+ *     responses:
+ *       200:
+ *         description: Webhook URL registered successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Webhook registered successfully
+ *                 url:
+ *                   type: string
+ *                   format: uri
+ *                 active:
+ *                   type: boolean
+ *                   example: true
+ *       400:
+ *         description: Missing, invalid, or unsupported webhook URL.
+ *       401:
+ *         description: Missing, invalid, or expired bearer token.
+ *       500:
+ *         description: Webhook registration could not be completed.
+ */
+router.post("/fintech/webhook", auth, fintechController.registerWebhook);
+
+/**
+ * @swagger
  * /api/account/create:
  *   post:
  *     summary: Create account using KYC

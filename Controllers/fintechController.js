@@ -8,9 +8,11 @@ const Account = require("../Models/Account");
 const { generateAccountNumber } = require("../Utils/accountGenerator");
 
 const Transaction = require("../Models/Transaction");
+const Webhook = require("../Models/Webhook");
 
 const { loadTemplate } = require("../Utils/emailTemplate");
 const { sendEmail } = require("../Utils/mailer");
+const { sendInwardTransactionWebhook } = require("../Utils/webhook");
 
 const BVN = require("../Models/BVN");
 const NIN = require("../Models/NIN");
@@ -72,37 +74,31 @@ exports.onboardFintech = async (req, res) => {
   const apiSecret = crypto.randomBytes(32).toString("hex");
 
   const bankCode = Math.floor(100 + Math.random() * 900).toString();
-  let bankName = `${name.slice(0,3).toUpperCase()} Bank`;
+  const bankPrefix = `${name.slice(0, 3).toUpperCase()} Bank`;
+  const suffixes = [
+    "Alpha",
+    "Nova",
+    "Prime",
+    "Core",
+    "Axis",
+    "Trust",
+    "Unity",
+    "Global",
+    "Metro",
+    "Capital"
+  ];
 
-
-  let exists = await Fintech.findOne({ bankName });
-
+  let bankName;
   let index = 0;
 
-  const suffixes = [
-  "Alpha",
-  "Nova",
-  "Prime",
-  "Core",
-  "Axis",
-  "Trust",
-  "Unity",
-  "Global",
-  "Metro",
-  "Capital"
-];
+  do {
+    const suffix = index === 0
+      ? ""
+      : suffixes[index - 1] || String(index);
 
-  while (exists) {
-    bankName = `${name.slice(0,3).toUpperCase()} Bank ${suffixes[index]}`;
-
+    bankName = suffix ? `${bankPrefix} ${suffix}` : bankPrefix;
     index++;
-
-    if (index >= suffixes.length) {
-      throw new Error("Unable to generate unique bank name");
-    }
-
-    exists = await Fintech.findOne({ bankName });
-  }
+  } while (await Fintech.exists({ bankName }));
 
   const fintech = await Fintech.create({
     name,
@@ -480,6 +476,26 @@ exports.transfer = async (req, res) => {
     await session.commitTransaction();
     session.endSession();
 
+    try {
+      const webhook = await Webhook.findOne({
+        fintechId: receiverFintech._id,
+        active: true
+      });
+
+      if (webhook) {
+        await sendInwardTransactionWebhook(webhook.url, {
+          reference: tx.reference,
+          senderAccount: tx.senderAccount,
+          receiverAccount: tx.receiverAccount,
+          amount: tx.amount,
+          status: tx.status,
+          receivedAt: tx.createdAt
+        });
+      }
+    } catch (error) {
+      console.error("INWARD WEBHOOK ERROR:", error.message);
+    }
+
     // 📩 Send emails (DO NOT break transfer if they fail)
 
 //     // Debit email
@@ -568,5 +584,42 @@ exports.getAccountBalance = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+exports.registerWebhook = async (req, res) => {
+  const url = req.body.url || req.body.webhookUrl;
+
+  if (!url) {
+    return res.status(400).json({ message: "Webhook URL is required" });
+  }
+
+  try {
+    const parsedUrl = new URL(url);
+
+    if (!["http:", "https:"].includes(parsedUrl.protocol)) {
+      return res.status(400).json({
+        message: "Webhook URL must use HTTP or HTTPS"
+      });
+    }
+  } catch (error) {
+    return res.status(400).json({ message: "Invalid webhook URL" });
+  }
+
+  try {
+    const webhook = await Webhook.findOneAndUpdate(
+      { fintechId: req.user.fintechId },
+      { url, active: true },
+      { new: true, upsert: true, runValidators: true }
+    );
+
+    return res.status(200).json({
+      message: "Webhook registered successfully",
+      url: webhook.url,
+      active: webhook.active
+    });
+  } catch (error) {
+    console.error("WEBHOOK REGISTRATION ERROR:", error);
+    return res.status(500).json({ message: "Unable to register webhook" });
   }
 };
